@@ -90,10 +90,100 @@ plt.show()
 # difference between hub price and node price
 basis_difference = RTH - RTN
 
+#scatter plot of wind (x axis) and basis risk (y axis)
 plt.scatter(WIND,basis_difference,c='orange',alpha=0.5,edgecolors='black')
 plt.xlabel('Wind (MWh)')
 plt.ylabel('Hub minus Node ($/MWh)')
 
+# combine wind and basis risk data into a single array
+combined = np.column_stack((WIND,basis_difference))
+
+# convert single array to pandas dataframe and rename columns
+df_combined = pd.DataFrame(combined)
+df_combined.columns = ['Wind','Basis_Risk']
+
+# drop NaN values from dataframe
+cleaned = df_combined.dropna()
+
+# calculate pearson R correlation
+r = st.pearsonr(cleaned['Wind'],cleaned['Basis_Risk'])
+print('The correlation and p-value are ' + str(r))
 
 
+#########################################################################
 
+#read in electricity demand data
+
+# set counter equal to 0
+counter = 0
+
+# iterate over two years
+for year in range(2015,2017):
+    
+    # iterate over 12 months    
+    for i in range(1,13):
+            
+        #base of filename
+        base = 'HOURLY_LOAD-' + str(year)
+        
+        if i < 10:
+            adder = '0' + str(i)
+        else:
+            adder = str(i)
+        
+        #specify filename to read
+        filename = base + adder + '.csv'
+        
+        #read data 
+        data = pd.read_csv(filename,header=0)
+  
+        # if it's the first month we're reading in, set demand = data
+        if counter < 1:
+             
+            demand = data
+        
+        # otherwise, stack new data underneath old data
+        else:
+            
+            demand = pd.concat((demand,data),sort=False)
+        
+        counter = counter + 1
+    
+#get rid of duplicate values
+shortened = demand.drop_duplicates()
+
+#reset index
+S = shortened.reset_index(drop=True)
+
+#calculate total SPP demand
+SPP_total =[]
+for i in range(0,len(S)):
+    total = np.sum(S.loc[i,' CSWS':' WR'])
+    if total >0:
+        SPP_total.append(total)
+        
+#plot SPP electricity demand
+plt.plot(SPP_total,color='b')
+plt.xlabel('Hour')
+plt.ylabel('Demand (MWh')
+plt.show()
+
+
+#scatter plot of wind (x axis) and basis risk (y axis)
+plt.scatter(SPP_total,basis_difference,c='blue',alpha=0.3,edgecolors='black')
+plt.xlabel('Demand(MWh)')
+plt.ylabel('Hub minus Node ($/MWh)')
+
+# combine wind and basis risk data into a single array
+combined = np.column_stack((SPP_total,basis_difference))
+
+# convert single array to pandas dataframe and rename columns
+df_combined = pd.DataFrame(combined)
+df_combined.columns = ['Demand','Basis_Risk']
+
+# drop any NaN values from dataframe
+cleaned = df_combined.dropna()
+
+# calculate pearson R correlation
+r = st.pearsonr(cleaned['Demand'],cleaned['Basis_Risk'])
+print('The correlation and p-value are ' + str(r))
