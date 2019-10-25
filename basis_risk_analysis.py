@@ -169,12 +169,12 @@ plt.ylabel('Demand (MWh')
 plt.show()
 
 
-#scatter plot of wind (x axis) and basis risk (y axis)
+#scatter plot of SPP demand (x axis) and basis risk (y axis)
 plt.scatter(SPP_total,basis_difference,c='blue',alpha=0.3,edgecolors='black')
 plt.xlabel('Demand(MWh)')
 plt.ylabel('Hub minus Node ($/MWh)')
 
-# combine wind and basis risk data into a single array
+# combine SPP demand and basis risk data into a single array
 combined = np.column_stack((SPP_total,basis_difference))
 
 # convert single array to pandas dataframe and rename columns
