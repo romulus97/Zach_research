@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as st
+from sklearn import linear_model
 
 # read in excel file with price data
 df_prices = pd.read_excel('SPP_LMPs.xlsx',sheet_name='Historical LMP',header=1)
@@ -163,18 +164,19 @@ for i in range(0,len(S)):
         SPP_total.append(total)
         
 #plot SPP electricity demand
+plt.figure()
 plt.plot(SPP_total,color='b')
 plt.xlabel('Hour')
 plt.ylabel('Demand (MWh')
 plt.show()
 
 
-#scatter plot of SPP demand (x axis) and basis risk (y axis)
+#scatter plot of wind (x axis) and basis risk (y axis)
 plt.scatter(SPP_total,basis_difference,c='blue',alpha=0.3,edgecolors='black')
 plt.xlabel('Demand(MWh)')
 plt.ylabel('Hub minus Node ($/MWh)')
 
-# combine SPP demand and basis risk data into a single array
+# combine wind and basis risk data into a single array
 combined = np.column_stack((SPP_total,basis_difference))
 
 # convert single array to pandas dataframe and rename columns
@@ -182,8 +184,49 @@ df_combined = pd.DataFrame(combined)
 df_combined.columns = ['Demand','Basis_Risk']
 
 # drop any NaN values from dataframe
-cleaned = df_combined.dropna()
+cleaned2 = df_combined.dropna()
 
 # calculate pearson R correlation
-r = st.pearsonr(cleaned['Demand'],cleaned['Basis_Risk'])
+r = st.pearsonr(cleaned2['Demand'],cleaned2['Basis_Risk'])
 print('The correlation and p-value are ' + str(r))
+
+#############################################
+# multivariate regresssion of wind production, demand, and basis risk
+
+# combine wind and basis risk data into a single array
+combined = np.column_stack((WIND,SPP_total,basis_difference))
+df_combined = pd.DataFrame(combined)
+df_combined.columns = ['Wind','Demand','Basis_Risk']
+cleaned = df_combined.dropna()
+
+# define linear regression object
+reg = linear_model.LinearRegression()
+
+# Train the models using a training set
+X = np.column_stack((cleaned['Wind'],cleaned['Demand']))
+reg.fit(X,cleaned['Basis_Risk'])
+
+# print intercept
+print(reg.intercept_)
+
+# print coefficients
+print(reg.coef_)
+
+# y = coef#1 * wind + coef#2 * demand + intercept
+
+W = cleaned.loc[:,'Wind']
+D = cleaned.loc[:,'Demand']
+B = cleaned.loc[:,'Basis_Risk']
+
+Y = []
+for i in range(0,len(W)):
+    
+    y_hat = 
+    
+    Y.append(y_hat)
+    
+# compare Y and B
+    
+plt.figure()
+plt.plot(Y)
+plt.plot(B)
