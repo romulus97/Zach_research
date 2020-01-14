@@ -4,8 +4,6 @@ Created on Wed Dec  4 13:19:52 2019
 
 @author: jkern
 """
-
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
