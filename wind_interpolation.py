@@ -28,14 +28,7 @@ rtn_both = rtn2015_edit.append(rtn2016)
 # convert to numerical array
 RTN = np.array(rtn_both)
 
-#plot 2015 and 2016 nodal prices
-plt.plot(RTN)
-plt.xlabel('Hour')
-plt.ylabel('Price $/MWh')
-plt.show()
-
 #now do the same thing with hub prices
-
 # selecting only real time hub prices for 2015
 rth2015 = df_prices['RT_HUB_2015']
 
@@ -50,12 +43,6 @@ rth_both = rth2015_edit.append(rth2016)
 
 # convert to numerical array
 RTH = np.array(rth_both)
-
-#plot 2015 and 2016 hub prices
-plt.plot(RTH,color='r')
-plt.xlabel('Hour')
-plt.ylabel('Price $/MWh')
-plt.show()
 
 ########################################################################
 
@@ -78,12 +65,6 @@ wind_both = wind2015_edit.append(wind2016)
 
 # convert to numerical array
 WIND = np.array(wind_both)
-
-#plot 2015 and 2016 hub prices
-plt.plot(WIND,color='g')
-plt.xlabel('Hour')
-plt.ylabel('Energy (MWh')
-plt.show()
 
 #convert hourly wind data to daily
 no_hours = len(WIND)
@@ -119,14 +100,22 @@ for i in range(0,no_days):
         # fill in value as mean of hour +/- 1
         WIND[i*24+location] = 0.5*WIND[i*24+location-1] + 0.5*WIND[i*24+location+1]
 
-    else:
+    elif missing_hours > 1:
         
         #daily total for the missing day
-        DT = fixed.iloc[i]
+        DT = fixed.iloc[i,0]
         
         #find closest daily total on another day
+        differences = abs(DT-fixed)
+        sorted_differences = differences.sort_values(by='Daily_Total',ascending=True)
+        val_mask = sorted_differences == sorted_differences.iloc[1,0]
+        day = val_mask.index[val_mask['Daily_Total']==True][0]
         
-        # write code that finds the value of 'fixed' that is closest in amount to 'DT'
+        #take hourly data from that chosen day
+        hourly = WIND[day*24:day*24+24]/np.max(WIND[day*24:day*24+24])
+        WIND[i*24:i*24+24] = hourly*DT
+    else:
+        pass
         
     
 
