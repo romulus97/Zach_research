@@ -58,6 +58,14 @@ plt.xlabel('Hour')
 plt.ylabel('Price $/MWh')
 plt.show()
 
+df_RTH = pd.DataFrame(RTH)
+df_RTH.columns = ['Value']
+df_RTH.to_csv('clean_HUB_PRICES.csv')
+
+df_RTN = pd.DataFrame(RTN)
+df_RTN.columns = ['Value']
+df_RTN.to_csv('clean_NODE_PRICES.csv')
+
 ########################################################################
 
 #now read in wind speed data
@@ -170,6 +178,10 @@ plt.xlabel('Hour')
 plt.ylabel('Demand (MWh')
 plt.show()
 
+df_SPP = pd.DataFrame(SPP_total)
+df_SPP.columns = ['Value']
+df_SPP.to_csv('clean_DEMAND.csv')
+
 
 #scatter plot of wind (x axis) and basis risk (y axis)
 plt.scatter(SPP_total,basis_difference,c='blue',alpha=0.3,edgecolors='black')
@@ -254,7 +266,7 @@ for i in range(0,len(errors)):
     
     count = 0
     
-    print(i)
+#    print(i)
     e = st.cauchy.rvs(loc=best_fit_params[0], scale=best_fit_params[1], size=1)
     
     while e > 45 or e < -700:

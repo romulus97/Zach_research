@@ -112,10 +112,14 @@ for i in range(0,no_days):
         day = val_mask.index[val_mask['Daily_Total']==True][0]
         
         #take hourly data from that chosen day
-        hourly = WIND[day*24:day*24+24]/np.max(WIND[day*24:day*24+24])
+        hourly = WIND[day*24:day*24+24]/np.sum(WIND[day*24:day*24+24])
         WIND[i*24:i*24+24] = hourly*DT
     else:
         pass
+    
+df_WIND = pd.DataFrame(WIND)
+df_WIND.columns = ['Value']
+df_WIND.to_csv('clean_WIND.csv')
         
     
 
