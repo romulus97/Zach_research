@@ -68,7 +68,7 @@ df_RTN.to_csv('clean_NODE_PRICES.csv')
 
 ########################################################################
 
-#now read in wind speed data
+#now read in wind power data
 
 # read in excel file with wind speed data
 df_wind = pd.read_excel('SPP_wind data_20180309.xlsx',sheet_name='Historical 8760s',header=14)

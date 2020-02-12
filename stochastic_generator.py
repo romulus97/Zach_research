@@ -29,7 +29,6 @@ stoch_demand = np.zeros((years*8760,1))
 stoch_HUB = np.zeros((years*8760,1))
 
 # remove leap days from observed data
-
 start_wind = df_wind.loc[0:8760+24*(31+28)-1,'Value']
 end_wind = df_wind.loc[8760+24*(31+28+1):,'Value']
 df_combined_wind = start_wind.append(end_wind)
@@ -42,7 +41,7 @@ start_prices = df_prices.loc[0:8760+24*(31+28)-1,'Value']
 end_prices = df_prices.loc[8760+24*(31+28+1):,'Value']
 df_combined_prices = start_prices.append(end_prices)
 
-for i in range(0,15):
+for i in range(0,int(years/2)):
     stoch_wind[i*17520:i*17520+17520,0] = df_combined_wind.loc[:]
     stoch_demand[i*17520:i*17520+17520,0] = df_combined_demand.loc[:]
     stoch_HUB[i*17520:i*17520+17520,0] = df_combined_prices.loc[:]
@@ -60,6 +59,8 @@ basis_risk = []
 nodal_prices = []
 
 for i in range(0,len(stoch_HUB)):
+    
+    print(i)
     
     y_hat = stoch_wind[i]*coef_1 + stoch_demand[i]*coef_2 + intercept
     
@@ -80,5 +81,13 @@ for i in range(0,len(stoch_HUB)):
     
     nodal_prices = np.append(nodal_prices, -1*(y_hat - e - stoch_HUB[i]))
     
+df_nodal = pd.DataFrame(nodal_prices)
+df_nodal.to_csv('stoch_nodal.csv')
+df_wind = pd.DataFrame(stoch_wind)
+df_wind.to_csv('stoch_wind.csv')
+df_demand = pd.DataFrame(stoch_demand)
+df_demand.to_csv('stoch_demand.csv')
+df_hub = pd.DataFrame(stoch_HUB)
+df_hub.to_csv('stoch_hub.csv')
 
     

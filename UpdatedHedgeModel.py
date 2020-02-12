@@ -13,51 +13,72 @@ import numpy as np
 
 #set up empty vectors for values
 DeveloperHUBRevenue=[] #money the developer is paid by commodity trader
-CommoditiesTraderRevenue=[] # money the commodities trader makes from wind developer making up difference between hub price and strike price
-HedgePrice=21.36191 # Hedge strike price variable, can be changed later 
+TraderRevenue=[] # money the commodities trader makes from wind developer making up difference between hub price and strike price
+Strike=21.35# Hedge strike price variable, can be changed later 
 DeveloperNodeRevenue=[] # money made from selling all energy produced into nodal market
-DeveloperNodeLosses=[] # money lost from buying energy from nodal market to meet hedge target
+DeveloperNodeCosts=[] # money lost from buying energy from nodal market to meet hedge target
 
+# Hub prices
+HubPrices = pd.read_csv('stoch_hub.csv',header=0,index_col=0)
+HubPrices = HubPrices.values
 
-PriceList = pd.read_excel('LatestPricesandHedgeValues.xlsx', sheet_name='Sheet1')
-#print(PriceList)
+# Node prices
+NodePrices = pd.read_csv('stoch_nodal.csv',header=0,index_col=0)
+NodePrices = NodePrices.values
 
-#Get all data into seperate lists
-Difference= PriceList['Difference'] # Difference between amount of energy generated and hedge target 
-RTHUB= PriceList['RT_hub']  #real time hub prices
-RTNODE= PriceList['RT_node'] #real time node prices
-Targets=PriceList['Target'] #Hedge Targets
-WEnergy=PriceList['Energy'] #Amount of Energy produced
+# Wind power production
+WindPower = pd.read_csv('stoch_wind.csv',header=0,index_col=0)
+WindPower = WindPower.values
 
+# 8760 hours of hedge targets
+HedgeTargets = pd.read_csv('hedge_targets_time_series.csv',header=0)
+HT = HedgeTargets.values
+
+Full_HedgeTargets = []
+
+years = int(len(WindPower)/8760)
+
+for i in range(0,years):
+    Full_HedgeTargets = np.append(Full_HedgeTargets,HT)
+    
+# Create time series of hedge target/wind power differences
+Full_HedgeTargets = np.reshape(Full_HedgeTargets,(len(Full_HedgeTargets),1))
+Difference = WindPower - Full_HedgeTargets
 
 #developer/ nodal market transactions
 
-for i in range(0,len(RTHUB)):
+for i in range(0,len(HubPrices)):
+
     if Difference[i]>0: #if excess energy is generated, sell all energy to market at node price(includes excess energy and hedge target amount)
-        DeveloperNodeRevenue.append(WEnergy[i]*np.max((0,RTNODE[i])))
+        DeveloperNodeRevenue.append(WindPower[i,0]*np.max((0,NodePrices[i,0])))
+
+
     elif Difference[i]<0:     #if not enough energy has been made, buy difference from market at node price to meet hedge target
-        DeveloperNodeLosses.append((Targets[i]-WEnergy[i])*RTNODE[i]) #money lost from buying energy
-        DeveloperNodeRevenue.append(WEnergy[i]*np.max((0,RTNODE[i]))) #Still sell the energy that was made, even though target was not met
+        DeveloperNodeRevenue.append(WindPower[i,0]*np.max((0,NodePrices[i,0]))) #Still sell the energy that was made, even though target was not met
+        DeveloperNodeCosts.append((Full_HedgeTargets[i]-WindPower[i])*NodePrices[i]) #money lost from buying energy
 
-#ComTrader/ Developer transactions
+#Trader/ Developer transactions
 
-for i in range(0,len(RTHUB)):
-    if RTHUB[i]>HedgePrice:
-        CommoditiesTraderRevenue.append((RTHUB[i]-HedgePrice)*Targets[i]) #developer pays commodity trader
-    elif RTHUB[i]<HedgePrice:
-        DeveloperHUBRevenue.append((HedgePrice-RTHUB[i])*Targets[i]) #commodity pays developer
+for i in range(0,len(HubPrices)):
+    
+    if HubPrices[i,0]>Strike:
+        TraderRevenue.append((HubPrices[i,0]-Strike)*Full_HedgeTargets[i]) #developer pays commodity trader
+    
+    elif HubPrices[i,0]<Strike:
+        DeveloperHUBRevenue.append((Strike-HubPrices[i,0])*Full_HedgeTargets[i]) #commodity pays developer
         
 
 
-X=sum(DeveloperNodeRevenue)
-Y=sum(DeveloperNodeLosses)
-Z=sum(DeveloperHUBRevenue)
+DNR=sum(DeveloperNodeRevenue)
+DNC=sum(DeveloperNodeCosts)
+DHR=sum(DeveloperHUBRevenue)
+TR = sum(TraderRevenue)
 
 print("Commodity Trader Revenue:$"), 
-print((sum(CommoditiesTraderRevenue))-Z) #net gain for commodity trader, taking out money that was paid to developer        
+print(TR - DHR) #net gain for commodity trader, taking out money that was paid to developer        
 
 print("Wind Developer Revenue:$"),
-print(X+Z-Y)
+print(DNR + DHR - DNC - TR)
 
 print("Commodity Trader Revenue/Developer HUB Revenue Ratio:"),
-print(((float((sum(CommoditiesTraderRevenue)))-float(Z))/float(Z)))
+print((TR - DHR)/DHR)
