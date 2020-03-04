@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 #set up empty vectors for values
 DeveloperHUBRevenue=[] #money the developer is paid by commodity trader
 TraderRevenue=[] # money the commodities trader makes from wind developer making up difference between hub price and strike price
-Strike=21.35# Hedge strike price variable, can be changed later 
+Strike=30# Hedge strike price variable, can be changed later 
 DeveloperNodeRevenue=[] # money made from selling all energy produced into nodal market
 DeveloperNodeCosts=[] # money lost from buying energy from nodal market to meet hedge target
 DeveloperNoHedge = []
