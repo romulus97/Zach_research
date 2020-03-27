@@ -46,8 +46,8 @@ for i in range(0,num_years):
     aug = sample[24*212:24*243]
     sep = sample[24*243:24*273]
     octo = sample[24*273:24*304]
-    nov = sample[24*304:24*335]
-    dec = sample[24*335:24*365]
+    nov = sample[24*304:24*334]
+    dec = sample[24*334:24*365]
     
     janM = vector2matrix(jan)
     febM= vector2matrix(feb)
@@ -86,6 +86,28 @@ plt.plot(T_targets)
 plt.xlabel('Hour')
 plt.ylabel('Target (MWh)')
 
+####################################
+# convert targets back to vector
+
+annual = np.zeros((8760,1))
+
+annual[0:24*31] = np.reshape(np.tile(T_targets[:,0],31),(744,1))
+annual[24*31:24*59] = np.reshape(np.tile(T_targets[:,1],28),(672,1))
+annual[24*59:24*90] = np.reshape(np.tile(T_targets[:,2],31),(744,1))
+annual[24*90:24*120] = np.reshape(np.tile(T_targets[:,3],30),(720,1))
+annual[24*120:24*151] = np.reshape(np.tile(T_targets[:,4],31),(744,1))
+annual[24*151:24*181] = np.reshape(np.tile(T_targets[:,5],30),(720,1))
+annual[24*181:24*212] = np.reshape(np.tile(T_targets[:,6],31),(744,1))
+annual[24*212:24*243] = np.reshape(np.tile(T_targets[:,7],31),(744,1))
+annual[24*243:24*273] = np.reshape(np.tile(T_targets[:,8],30),(720,1))
+annual[24*273:24*304] = np.reshape(np.tile(T_targets[:,9],31),(744,1))
+annual[24*304:24*334] = np.reshape(np.tile(T_targets[:,10],30),(720,1))
+annual[24*334:24*365] = np.reshape(np.tile(T_targets[:,11],31),(744,1))
+
+new_targets = np.tile(annual,(30,1))
+df_new = pd.DataFrame(new_targets)
+df_new.columns = ['Targets']
+df_new.to_csv('new_targets.csv')
 
 
 
