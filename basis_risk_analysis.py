@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 import scipy.stats as st
 from sklearn import linear_model
 
+# LOAD RELEVANT DATA
+
 # read in excel file with price data
 df_prices = pd.read_excel('SPP_LMPs.xlsx',sheet_name='Historical LMP',header=1)
 
@@ -241,15 +243,15 @@ for i in range(0,len(W)):
     
 # compare estimated and actual basis risk
 plt.figure()
-plt.plot(B,'b')
-plt.plot(Y,'r')
+plt.plot(B[0:500],'b')
+plt.plot(Y[0:500],'r')
 plt.ylabel('Basis Risk ($/MWh)')
-plt.xlabel('Frequency')
+plt.xlabel('Hour')
 
 # error analysis 
 errors = Y - B
 plt.figure()
-plt.hist(errors,50)
+plt.hist(errors,200)
 plt.xlabel('Error ($/MWh)')
 plt.ylabel('Frequency')
 

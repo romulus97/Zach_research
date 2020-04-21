@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 #set up empty vectors for values
 DeveloperHUBRevenue=[] #money the developer is paid by commodity trader
 TraderRevenue=[] # money the commodities trader makes from wind developer making up difference between hub price and strike price
-Strike=30# Hedge strike price variable, can be changed later 
+Strike=23# Hedge strike price variable, can be changed later 
 DeveloperNodeRevenue=[] # money made from selling all energy produced into nodal market
 DeveloperNodeCosts=[] # money lost from buying energy from nodal market to meet hedge target
 DeveloperNoHedge = []
@@ -33,6 +33,7 @@ WindPower = WindPower.values
 
 # 8760 hours of hedge targets
 HedgeTargets = pd.read_csv('hedge_targets_time_series.csv',header=0)
+#HedgeTargets = pd.read_csv('new_targets.csv',header=0)
 HT = HedgeTargets.values
 
 Full_HedgeTargets = []
@@ -110,4 +111,9 @@ plt.figure()
 plt.plot(WithHedge_annual,'b')
 plt.plot(NoHedge_annual,'r')
 plt.ylim([0,1.5e7])
+
+
+plt.figure()
+plt.hist(HubPrices,300)
+plt.xlim([0,200])
 

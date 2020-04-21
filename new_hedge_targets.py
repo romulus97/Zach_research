@@ -104,7 +104,7 @@ annual[24*273:24*304] = np.reshape(np.tile(T_targets[:,9],31),(744,1))
 annual[24*304:24*334] = np.reshape(np.tile(T_targets[:,10],30),(720,1))
 annual[24*334:24*365] = np.reshape(np.tile(T_targets[:,11],31),(744,1))
 
-new_targets = np.tile(annual,(30,1))
+new_targets = annual
 df_new = pd.DataFrame(new_targets)
 df_new.columns = ['Targets']
 df_new.to_csv('new_targets.csv')
