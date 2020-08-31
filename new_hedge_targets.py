@@ -9,9 +9,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-data = pd.read_csv('stoch_wind.csv',header=0,index_col=0)
-
-num_years = int(len(data)/8760)
 
 targets = np.zeros((12,24))
 
@@ -32,82 +29,109 @@ def vector2matrix(v):
 
 ######################################
 
-for i in range(0,num_years):
+for i in range(0,4):
     
-    sample = data.loc[i*8760:i*8760+8759].values
+    year_string = str(2013+i)
     
-    jan = sample[0:24*31]
-    feb = sample[24*31:24*59]
-    mar = sample[24*59:24*90]
-    apr = sample[24*90:24*120]
-    may = sample[24*120:24*151]
-    jun = sample[24*151:24*181]
-    jul = sample[24*181:24*212]
-    aug = sample[24*212:24*243]
-    sep = sample[24*243:24*273]
-    octo = sample[24*273:24*304]
-    nov = sample[24*304:24*334]
-    dec = sample[24*334:24*365]
+    data = pd.read_excel('wind_data.xlsx',sheet_name = year_string, header=0)
     
-    janM = vector2matrix(jan)
-    febM= vector2matrix(feb)
-    marM = vector2matrix(mar)
-    aprM = vector2matrix(apr)
-    mayM = vector2matrix(may)
-    junM = vector2matrix(jun)
-    julM = vector2matrix(jul)
-    augM = vector2matrix(aug)
-    sepM = vector2matrix(sep)
-    octM = vector2matrix(octo)
-    novM = vector2matrix(nov)
-    decM = vector2matrix(dec)
+    sample = data.loc[:,'MW'].values
+    
+    if i < 1:
+    
+        jan = sample[0:24*31]
+        feb = sample[24*31:24*59]
+        mar = sample[24*59:24*90]
+        apr = sample[24*90:24*120]
+        may = sample[24*120:24*151]
+        jun = sample[24*151:24*181]
+        jul = sample[24*181:24*212]
+        aug = sample[24*212:24*243]
+        sep = sample[24*243:24*273]
+        octo = sample[24*273:24*304]
+        nov = sample[24*304:24*334]
+        dec = sample[24*334:24*365]
+        
+        JA = jan
+        FE = feb
+        MR = mar
+        AP = apr
+        MA = may
+        JN = jun
+        JL = jul
+        AU = aug
+        SE = sep
+        OC = octo
+        NO = nov
+        DE = dec
+    
+    else:
+        
+        jan = sample[0:24*31]
+        feb = sample[24*31:24*59]
+        mar = sample[24*59:24*90]
+        apr = sample[24*90:24*120]
+        may = sample[24*120:24*151]
+        jun = sample[24*151:24*181]
+        jul = sample[24*181:24*212]
+        aug = sample[24*212:24*243]
+        sep = sample[24*243:24*273]
+        octo = sample[24*273:24*304]
+        nov = sample[24*304:24*334]
+        dec = sample[24*334:24*365]
+        
+        JA = np.append(JA,jan)
+        FE = np.append(FE,feb)
+        MR = np.append(MR,mar)
+        AP = np.append(AP,apr)
+        MA = np.append(MA,may)
+        JN = np.append(JN,jun)
+        JL = np.append(JL,jul)
+        AU = np.append(AU,aug)
+        SE = np.append(SE,sep)
+        OC = np.append(OC,octo)
+        NO = np.append(NO,nov)
+        DE = np.append(DE,dec) 
+    
+janM = vector2matrix(JA)
+febM= vector2matrix(FE)
+marM = vector2matrix(MR)
+aprM = vector2matrix(AP)
+mayM = vector2matrix(MA)
+junM = vector2matrix(JN)
+julM = vector2matrix(JL)
+augM = vector2matrix(AU)
+sepM = vector2matrix(SE)
+octM = vector2matrix(OC)
+novM = vector2matrix(NO)
+decM = vector2matrix(DE)
   
-    for i in range(0,24):
+for i in range(0,24):
+        
+        targets[0,i] = np.median(janM[:,i])
+        targets[1,i] = np.median(febM[:,i])
+        targets[2,i] = np.median(marM[:,i])
+        targets[3,i] = np.median(aprM[:,i])
+        targets[4,i] = np.median(mayM[:,i])
+        targets[5,i] = np.median(junM[:,i])
+        targets[6,i] = np.median(julM[:,i])
+        targets[7,i] = np.median(augM[:,i])
+        targets[8,i] = np.median(sepM[:,i])
+        targets[9,i] = np.median(octM[:,i])
+        targets[10,i] = np.median(novM[:,i])
+        targets[11,i] = np.median(decM[:,i])
             
-            targets[0,i] = targets[0,i] + np.mean(janM[:,i])
-            targets[1,i] = targets[1,i] + np.mean(febM[:,i])
-            targets[2,i] = targets[2,i] + np.mean(marM[:,i])
-            targets[3,i] = targets[3,i] + np.mean(aprM[:,i])
-            targets[4,i] = targets[4,i] + np.mean(mayM[:,i])
-            targets[5,i] = targets[5,i] + np.mean(junM[:,i])
-            targets[6,i] = targets[6,i] + np.mean(julM[:,i])
-            targets[7,i] = targets[7,i] + np.mean(augM[:,i])
-            targets[8,i] = targets[8,i] + np.mean(sepM[:,i])
-            targets[9,i] = targets[9,i] + np.mean(octM[:,i])
-            targets[10,i] = targets[10,i] + np.mean(novM[:,i])
-            targets[11,i] = targets[11,i] + np.mean(decM[:,i])
-            
-targets = targets/num_years
-
 T_targets = np.transpose(targets)
 
 plt.figure()
 plt.plot(T_targets)
 plt.xlabel('Hour')
 plt.ylabel('Target (MWh)')
+plt.legend(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
 
-####################################
-# convert targets back to vector
-
-annual = np.zeros((8760,1))
-
-annual[0:24*31] = np.reshape(np.tile(T_targets[:,0],31),(744,1))
-annual[24*31:24*59] = np.reshape(np.tile(T_targets[:,1],28),(672,1))
-annual[24*59:24*90] = np.reshape(np.tile(T_targets[:,2],31),(744,1))
-annual[24*90:24*120] = np.reshape(np.tile(T_targets[:,3],30),(720,1))
-annual[24*120:24*151] = np.reshape(np.tile(T_targets[:,4],31),(744,1))
-annual[24*151:24*181] = np.reshape(np.tile(T_targets[:,5],30),(720,1))
-annual[24*181:24*212] = np.reshape(np.tile(T_targets[:,6],31),(744,1))
-annual[24*212:24*243] = np.reshape(np.tile(T_targets[:,7],31),(744,1))
-annual[24*243:24*273] = np.reshape(np.tile(T_targets[:,8],30),(720,1))
-annual[24*273:24*304] = np.reshape(np.tile(T_targets[:,9],31),(744,1))
-annual[24*304:24*334] = np.reshape(np.tile(T_targets[:,10],30),(720,1))
-annual[24*334:24*365] = np.reshape(np.tile(T_targets[:,11],31),(744,1))
-
-new_targets = annual
-df_new = pd.DataFrame(new_targets)
-df_new.columns = ['Targets']
-df_new.to_csv('new_targets.csv')
+df_T = pd.DataFrame(T_targets)
+df_T.columns = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+df_T.to_csv('P50.csv')
 
 
 

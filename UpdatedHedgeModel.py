@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 #set up empty vectors for values
 DeveloperHUBRevenue=[] #money the developer is paid by commodity trader
 TraderRevenue=[] # money the commodities trader makes from wind developer making up difference between hub price and strike price
-Strike=23# Hedge strike price variable, can be changed later 
+
+Strike=21.45# Hedge strike price variable, can be changed later 
 DeveloperNodeRevenue=[] # money made from selling all energy produced into nodal market
 DeveloperNodeCosts=[] # money lost from buying energy from nodal market to meet hedge target
 DeveloperNoHedge = []
@@ -65,7 +66,7 @@ for i in range(0,len(HubPrices)):
 
 for i in range(0,len(HubPrices)):
     
-    if HubPrices[i,0]>Strike:
+    if HubPrices[i,0]>=Strike:
         TraderRevenue.append((HubPrices[i,0]-Strike)*Full_HedgeTargets[i]) #developer pays commodity trader
         DeveloperHUBRevenue.append(0)
     
@@ -107,13 +108,13 @@ for i in range(0,years):
     NoHedge_annual.append(b)
     
 
-plt.figure()
-plt.plot(WithHedge_annual,'b')
-plt.plot(NoHedge_annual,'r')
-plt.ylim([0,1.5e7])
-
-
-plt.figure()
-plt.hist(HubPrices,300)
-plt.xlim([0,200])
+#plt.figure()
+#plt.plot(WithHedge_annual,'b')
+#plt.plot(NoHedge_annual,'r')
+#plt.ylim([0,1.5e7])
+#
+#
+#plt.figure()
+#plt.hist(HubPrices,300)
+#plt.xlim([0,200])
 
