@@ -71,7 +71,7 @@ row_to_explore = S.iloc[0,2]
 N = no_hedge.sim(HubPrices,NodePrices,WindPower,calendar,floor_months)
 max_rev = N[0]
 sorted_monthly = np.sort(N[2])
-floor = sum(sorted_monthly[0:floor_months])
+floor = sum(sorted_monthly[0:floor_months-1])
 
 #####################################################################
 
