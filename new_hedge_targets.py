@@ -28,14 +28,12 @@ def vector2matrix(v):
     return m
 
 ######################################
-
-for i in range(0,4):
+df_data = pd.read_csv('input_data.csv', header=0)
+data = df_data.loc[:,'Wind'].values
     
-    year_string = str(2013+i)
+for i in range(0,5):
     
-    data = pd.read_excel('wind_data.xlsx',sheet_name = year_string, header=0)
-    
-    sample = data.loc[:,'MW'].values
+    sample = data[i*8760:i*8760+8760]
     
     if i < 1:
     
@@ -131,7 +129,7 @@ plt.legend(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','D
 
 df_T = pd.DataFrame(T_targets)
 df_T.columns = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-df_T.to_csv('P50.csv')
+df_T.to_excel('P50.xlsx')
 
 
 

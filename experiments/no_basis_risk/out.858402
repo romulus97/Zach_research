@@ -1,0 +1,44 @@
+360.63966061671573 minutes
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@n2a4-5>
+Subject: Job 858402: <python platypus_hedge_model_VAR.py> in cluster <henry2> Done
+
+Job <python platypus_hedge_model_VAR.py> was submitted from host <login02> by user <jkern> in cluster <henry2> at Sat Oct 17 01:32:31 2020
+Job was executed on host(s) <8*n2a4-5>, in queue <single_chassis>, as user <jkern> in cluster <henry2> at Sat Oct 17 01:32:35 2020
+</home/jkern> was used as the home directory.
+</share/infews/jkern/platypus/wind/var/no_basis_risk> was used as the working directory.
+Started at Sat Oct 17 01:32:35 2020
+Terminated at Sat Oct 17 07:33:17 2020
+Results reported at Sat Oct 17 07:33:17 2020
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+python platypus_hedge_model_VAR.py
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   21646.18 sec.
+    Max Memory :                                 49.52 MB
+    Average Memory :                             49.50 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              3
+    Max Threads :                                4
+    Run time :                                   21650 sec.
+    Turnaround time :                            21646 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <err.858402> for stderr output of this job.
+

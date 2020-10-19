@@ -1,0 +1,44 @@
+1684.196232879162 minutes
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@n2g1-8>
+Subject: Job 586327: <python platypus_hedge_model_flexible_strike.py> in cluster <henry2> Done
+
+Job <python platypus_hedge_model_flexible_strike.py> was submitted from host <login01> by user <jkern> in cluster <henry2> at Mon Sep 28 14:19:50 2020
+Job was executed on host(s) <8*n2g1-8>, in queue <single_chassis>, as user <jkern> in cluster <henry2> at Mon Sep 28 14:19:52 2020
+</home/jkern> was used as the home directory.
+</share/infews/jkern/platypus/wind/flex_strike> was used as the working directory.
+Started at Mon Sep 28 14:19:52 2020
+Terminated at Tue Sep 29 18:24:06 2020
+Results reported at Tue Sep 29 18:24:06 2020
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+python platypus_hedge_model_flexible_strike.py
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   101105.17 sec.
+    Max Memory :                                 48.66 MB
+    Average Memory :                             48.21 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   36 KB
+    Max Processes :                              3
+    Max Threads :                                4
+    Run time :                                   101072 sec.
+    Turnaround time :                            101056 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <err.586327> for stderr output of this job.
+
