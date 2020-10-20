@@ -46,10 +46,36 @@ bias = np.mean(BasisRisk)
 spread = np.std(BasisRisk)
 
 # Alter nodal prices
-experiment = 'no_basis_risk'
-BasisRisk = (BasisRisk - bias)/spread
-NodePrices = HubPrices + BasisRisk
+experiment = 'standard_normal'
 
+if experiment == 'mean_zero':
+    BasisRisk = BasisRisk - bias
+elif experiment == 'mean_zero_10p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.10))
+elif experiment == 'mean_zero_20p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.20))
+elif experiment == 'mean_zero_30p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.30))    
+elif experiment == 'mean_zero_40p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.40))    
+elif experiment == 'mean_zero_50p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.50))
+elif experiment == 'mean_zero_60p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.60))
+elif experiment == 'mean_zero_70p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.70))
+elif experiment == 'mean_zero_80p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.80))    
+elif experiment == 'mean_zero_90p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.90))
+elif experiment == 'mean_zero_10p_std':
+    BasisRisk = (BasisRisk - bias)/(spread*(1-.10))
+elif experiment == 'standard_normal':
+    BasisRisk = (BasisRisk - bias)/(spread)
+elif experiment == 'no_basis_risk':
+    BasisRisk = 0
+    
+NodePrices = HubPrices + BasisRisk
 
 # objective functions
 filename = 'experiments/' + experiment + '/Objective_Functions.csv'
@@ -61,7 +87,8 @@ S = df_O.sort_values('Profits')
 
 
 #define (ranges from 0-99)
-row_to_explore = S.iloc[0,2]
+pick = 0 #0 = max floor improvement, 99 = max profits
+row_to_explore = S.iloc[pick,2]
 
 #####################################################################
 ##########         Performance Measures        ######################
@@ -71,7 +98,7 @@ row_to_explore = S.iloc[0,2]
 N = no_hedge.sim(HubPrices,NodePrices,WindPower,calendar,floor_months)
 max_rev = N[0]
 sorted_monthly = np.sort(N[2])
-floor = sum(sorted_monthly[0:floor_months-1])
+floor = sum(sorted_monthly[0:floor_months])
 
 #####################################################################
 
@@ -138,7 +165,7 @@ for i in range(0,len(HP)):
         month_hold = month
         Monthly.append(DeveloperMonth)
         
-        if len(Monthly) < floor_months:
+        if len(Monthly) <= floor_months:
             mins.append(DeveloperMonth)
         else:
             M = max(mins)

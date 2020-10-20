@@ -55,7 +55,7 @@ def sim(HP, NP, WP, C,floor_months):
             month_hold = month
             Monthly.append(DeveloperMonth)
             
-            if len(Monthly) < floor_months:
+            if len(Monthly) <= floor_months:
                 mins.append(DeveloperMonth)
             else:
                 M = max(mins)

@@ -124,7 +124,7 @@ def simulate(vars,
             month_hold = month
             Monthly.append(DeveloperMonth)
             
-            if len(Monthly) < 10:
+            if len(Monthly) <= 10:
                 mins.append(DeveloperMonth)
             else:
                 M = max(mins)
