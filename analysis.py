@@ -46,7 +46,12 @@ bias = np.mean(BasisRisk)
 spread = np.std(BasisRisk)
 
 # Alter nodal prices
-experiment = 'standard_normal'
+experiment = 'no_basis_risk'
+
+node = 'OKGE_SEILING'
+
+#define (ranges from 0-99)
+pick = 0 #0 = max floor improvement, 99 = max profits
 
 if experiment == 'mean_zero':
     BasisRisk = BasisRisk - bias
@@ -68,8 +73,6 @@ elif experiment == 'mean_zero_80p_std':
     BasisRisk = (BasisRisk - bias)/(spread*(1-.80))    
 elif experiment == 'mean_zero_90p_std':
     BasisRisk = (BasisRisk - bias)/(spread*(1-.90))
-elif experiment == 'mean_zero_10p_std':
-    BasisRisk = (BasisRisk - bias)/(spread*(1-.10))
 elif experiment == 'standard_normal':
     BasisRisk = (BasisRisk - bias)/(spread)
 elif experiment == 'no_basis_risk':
@@ -78,7 +81,7 @@ elif experiment == 'no_basis_risk':
 NodePrices = HubPrices + BasisRisk
 
 # objective functions
-filename = 'experiments/' + experiment + '/Objective_Functions.csv'
+filename = 'experiments/' + node + '/' + experiment + '/Objective_Functions.csv'
 df_O = pd.read_csv(filename,header=0,index_col=0)
 df_O.columns = ['Profits','F_change']
 order = range(0,len(df_O))
@@ -86,8 +89,6 @@ df_O['order'] = order
 S = df_O.sort_values('Profits')
 
 
-#define (ranges from 0-99)
-pick = 0 #0 = max floor improvement, 99 = max profits
 row_to_explore = S.iloc[pick,2]
 
 #####################################################################
@@ -104,7 +105,7 @@ floor = sum(sorted_monthly[0:floor_months])
 
 
 # hedgetargets
-filename = 'experiments/' + experiment + '/Decision_Variables.csv'
+filename = 'experiments/' + node + '/' + experiment + '/Decision_Variables.csv'
 df_H = pd.read_csv(filename,header=0,index_col = 0)
 
 hedgetargets = df_H.iloc[row_to_explore,:].values
@@ -193,7 +194,7 @@ print(results)
 print(Monthly)
 
 filename = 'Monthly' + str(row_to_explore) + '.txt'
-np.savetxt(filename,Monthly)
+# np.savetxt(filename,Monthly)
 
 plt.figure()
 plt.plot(N[2])

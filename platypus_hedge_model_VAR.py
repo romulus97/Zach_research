@@ -35,25 +35,17 @@ strikeprice = 22.64
 
 floor_months = 10
 
+
+#####################################################################
+##########         Performance Measures        ######################
+#####################################################################
+
 # Defined maximum (no hedge) revenues
 N = no_hedge.sim(HubPrices,NodePrices,WindPower,C,floor_months)
 max_rev = N[0]
 sorted_monthly = np.sort(N[2])
 floor = sum(sorted_monthly[0:floor_months])
 
-#####################################################################
-##########              BASIS RISK           ########################
-#####################################################################
-
-import matplotlib.pyplot as plt
-
-BasisRisk = HubPrices - NodePrices
-plt.hist(BasisRisk,100)
-
-bias = np.mean(BasisRisk)
-spread = np.std(BasisRisk)
-
-NodePrices = NodePrices + bias
 
 #####################################################################
 ##########           FUNCTION DEFINITION     ########################
@@ -66,12 +58,11 @@ def simulate(vars,
              NP = NodePrices,
              WP = WindPower,
              calendar=C,
-             M = max_rev,
+             RX = max_rev,
              V = floor
              ):
     
     #set up empty vectors for values
-    volume = 25510
     DeveloperProfits = 0
     DeveloperHedge = 0
     DeveloperRevs = 0
@@ -120,32 +111,19 @@ def simulate(vars,
             month_hold = month
             Monthly.append(DeveloperMonth)
             
-            if len(Monthly) < 10:
+            if len(Monthly) <= 10:
                 mins.append(DeveloperMonth)
             else:
                 M = max(mins)
                 if M > DeveloperMonth:
                     idx = mins.index(M)
-                    Monthly[idx] = DeveloperMonth
+                    mins[idx] = DeveloperMonth
             
             DeveloperMonth = D
                         
         else:
             DeveloperMonth += D
-    
-        # Constraints
-        # offpeak = 0
-        # peak = 0
-        # for i in range(0,24,2):
-        #     offpeak += vars[i]
-        # for i in range(1,25,2):
-        #     peak += vars[i]           
-            
-        
-           
-    # Hedge Volume Constraint
-    # Constraints.append(8*offpeak + 16*peak - volume*1.03) 
-    # Constraints.append(volume*0.97 - 8*offpeak - 16*peak) 
+
     
     Ratio = float(TraderRevs/DeveloperRevs)
     # DeveloperHedge = np.float(DeveloperHedge)
@@ -160,7 +138,7 @@ def simulate(vars,
     Constraints.append(1.08 - Ratio)    
     Constraints = list(Constraints)
     
-    Profit_fraction = float(DeveloperProfits/M)
+    Profit_fraction = float(DeveloperProfits/RX)
     
     return [Profit_fraction, Floor_improvement], Constraints
 
@@ -181,7 +159,7 @@ problem.function = simulate
 algorithm = NSGAII(problem)
 
 # Evaluate function # of times
-algorithm.run(100)
+algorithm.run(50000)
 
 stop = time.time()
 elapsed = (stop - start)/60

@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "platypus_hedge_model.py", line 156, in <module>
+    algorithm.run(1000)
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/core.py", line 408, in run
+    self.step()
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/algorithms.py", line 181, in step
+    self.initialize()
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/algorithms.py", line 191, in initialize
+    super(NSGAII, self).initialize()
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/algorithms.py", line 72, in initialize
+    self.evaluate_all(self.population)
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/core.py", line 381, in evaluate_all
+    results = self.evaluator.evaluate_all(jobs)
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/evaluator.py", line 88, in evaluate_all
+    return list(self.map_func(run_job, jobs))
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/evaluator.py", line 55, in run_job
+    job.run()
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/core.py", line 348, in run
+    self.solution.evaluate()
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/core.py", line 521, in evaluate
+    self.problem(self)
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/core.py", line 165, in __call__
+    self.evaluate(solution)
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/platypus/core.py", line 189, in evaluate
+    (objs, constrs) = self.function(solution.variables)
+  File "platypus_hedge_model.py", line 105, in simulate
+    DeveloperRevs += np.max([0,DH])
+  File "<__array_function__ internals>", line 5, in amax
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/numpy/core/fromnumeric.py", line 2667, in amax
+    return _wrapreduction(a, np.maximum, 'max', axis, None, out,
+  File "/usr/local/usrapps/infews/CAPOW_env/lib/python3.8/site-packages/numpy/core/fromnumeric.py", line 90, in _wrapreduction
+    return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+KeyboardInterrupt
