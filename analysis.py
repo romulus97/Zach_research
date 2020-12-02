@@ -190,13 +190,108 @@ Floor_improvement = VAR - V
 Profit_fraction = float(DeveloperProfits/RX)
 results = [Profit_fraction, Floor_improvement]
 
-print(results)
-print(Monthly)
+# print(results)
+# print(Monthly)
 
 filename = 'Monthly' + str(row_to_explore) + '.txt'
 # np.savetxt(filename,Monthly)
 
+# Compare to P99 Performance
+
+# P99 hedgetargets
+df_H = pd.read_excel('P50.xlsx',sheet_name='hedge_targets',header=None)
+
+hedgetargets = df_H.values
+   
+#set up empty vectors for values
+DeveloperProfits = 0
+DeveloperHedge = 0
+DeveloperRevs = 0
+DeveloperMonth = 0
+TraderProfits = 0
+TraderRevs = 0
+DeveloperDaily = [],
+Constraints = []
+Monthly_P99 = [] 
+month_hold = 1
+MonthlyVar = 0 
+mins = []
+
+strikeprice = 22.64
+
+HP = HubPrices
+NP = NodePrices
+WP = WindPower
+RX = max_rev
+V = floor
+   
+for i in range(0,len(HP)):
+    
+    # what month, hour of the day is it?
+    if i < 8760:
+        j = i
+    else:
+        j = i%8760                    
+    month = calendar[j,0]
+    day_hour = calendar[j,2]
+    
+    # Peak or off-peak hour     
+    if day_hour < 6 or day_hour > 21:
+        p = 0
+        
+    else:  
+        p = 1
+    
+    # Financial exchange
+    D = float(WP[i]*max([0,NP[i]]) - max([hedgetargets[(month-1)*2+p]-WP[i],0])*NP[i] + (strikeprice - HP[i])*hedgetargets[(month-1)*2+p])
+    # DeveloperDaily = np.append(DeveloperDaily,D)
+    DeveloperProfits += D
+    
+    T = float((HP[i] - strikeprice)*hedgetargets[(month-1)*2+p])
+    TraderRevs += max([0,T])
+    # TraderProfits += T
+    
+    DH = float((strikeprice - HP[i])*hedgetargets[(month-1)*2+p])
+    DeveloperRevs += max([0,DH])
+ 
+    # Monthly tracker
+    if month != month_hold:
+        month_hold = month
+        Monthly_P99.append(DeveloperMonth)
+        
+        if len(Monthly_P99) <= floor_months:
+            mins.append(DeveloperMonth)
+        else:
+            M = max(mins)
+            if M > DeveloperMonth:
+                idx = mins.index(M)
+                mins[idx] = DeveloperMonth
+        
+        DeveloperMonth = D
+                    
+    else:
+        DeveloperMonth += D
+
+Ratio = float(TraderRevs/DeveloperRevs)
+# DeveloperHedge = np.float(DeveloperHedge)
+for i in range(0,len(Monthly_P99)-1):
+    MonthlyVar += abs(Monthly_P99[i] - Monthly_P99[i+1])
+MonthlyVar = -MonthlyVar
+
+VAR = sum(mins)
+Floor_improvement = VAR - V
+Profit_fraction = float(DeveloperProfits/RX)
+results = [Profit_fraction, Floor_improvement]
+
+print(results)
+# print(Monthly_P99)
+
 plt.figure()
 plt.plot(N[2])
 plt.plot(Monthly)
-plt.legend(['No Hedge','Hedge'])
+plt.plot(Monthly_P99)
+plt.legend(['No Hedge','Hedge','P99'])
+
+
+
+
