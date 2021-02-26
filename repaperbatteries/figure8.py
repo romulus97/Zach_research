@@ -67,44 +67,49 @@ for node in L:
     locals()[ax].plot(line_coords,P99,color='gray',linestyle='--',linewidth=0.6)
     locals()[ax].set_title(node,fontname='Arial',size=7)
     locals()[ax].set_ylim([0,150])
+    locals()[ax].set_xticks([1,2,3,4,5,6,7,8,9,10,11,12])
+    locals()[ax].set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D'],size=5)
     
     if L.index(node) == 0:
-        locals()[ax].set_xticks([])
+        # locals()[ax].set_xticks([])
+        pass
     elif L.index(node) == 1:
-        locals()[ax].set_xticks([])
+        # locals()[ax].set_xticks([])
         locals()[ax].set_yticks([])
     elif L.index(node) == 2:
-        locals()[ax].set_xticks([])
+        # locals()[ax].set_xticks([])
         locals()[ax].set_yticks([])
     elif L.index(node) == 3:
-        locals()[ax].set_xticks([])
+        # locals()[ax].set_xticks([])
+        pass
     elif L.index(node) == 4:
-        locals()[ax].set_xticks([])
+        # locals()[ax].set_xticks([])
         locals()[ax].set_yticks([])
     elif L.index(node) == 5:
-        locals()[ax].set_xticks([])
+        # locals()[ax].set_xticks([])
         locals()[ax].set_yticks([])        
     elif L.index(node) == 6:
-        locals()[ax].set_xticks([])        
+        # locals()[ax].set_xticks([])
+        pass        
     elif L.index(node) == 7:
         locals()[ax].set_yticks([])
     elif L.index(node) == 8:
         locals()[ax].set_yticks([])         
 
 ax8.set_xlabel('Month',fontname = 'Arial',fontweight='bold')
-ax8.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12])
-ax8.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D'],size=5)
+# ax8.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12])
+# ax8.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D'],size=5)
 ax9.set_xlabel('Month',fontname = 'Arial',fontweight='bold')
-ax9.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12])
-ax9.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D'],size=5)
+# ax9.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12])
+# ax9.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D'],size=5)
 ax10.set_xlabel('Month',fontname = 'Arial',fontweight='bold') 
-ax10.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12])
-ax10.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D'],size=5)     
+# ax10.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12])
+# ax10.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D'],size=5)     
 
 ax11.set_visible(False)
 ax12.set_visible(False)
 
-plt.subplots_adjust(hspace=0.6,wspace=0.1)
+plt.subplots_adjust(hspace=0.9,wspace=0.1)
 
 fig.text(0.03, 0.5, 'Wind Power Production Targets (MWh)', fontname='Arial',fontweight='bold', va='center', rotation='vertical')
 
