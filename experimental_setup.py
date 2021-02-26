@@ -28,7 +28,7 @@ df_node.fillna('ffill')
 N = df_node.values
 
 nodes = ['WFECVICILD2','OKGEIODINE4LD2','OKGEWDWRD1LD2','OKGEWDWRDEHVUNKEENAN_WIND','OKGEKEENANWIND','OKGECEDAR5LD2','OKGESPIRITWIND','OKGE_SEILING','OKGECEDAVLD2','WFEC_MOORELAND_2']
-scenarios = ['no_basis_risk','std_normal','mean_zero_10p_std','mean_zero_20p_std','mean_zero_30p_std','mean_zero_40p_std','mean_zero_50p_std','mean_zero_60p_std','mean_zero_70p_std','mean_zero_80p_std','mean_zero_90p_std','mean_zero']
+scenarios = ['observed','no_basis_risk','std_normal','mean_zero_10p_std','mean_zero_20p_std','mean_zero_30p_std','mean_zero_40p_std','mean_zero_50p_std','mean_zero_60p_std','mean_zero_70p_std','mean_zero_80p_std','mean_zero_90p_std','mean_zero']
 
 for n in nodes:
     
@@ -74,6 +74,8 @@ for n in nodes:
             BasisRisk = (BasisRisk - bias)/((spread))
         elif s == 'no_basis_risk':
             BasisRisk = 0
+        elif s == 'observed':
+            BasisRisk = BasisRisk
             
         P = HubPrices + BasisRisk
         

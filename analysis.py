@@ -68,8 +68,8 @@ floor_months = 10
 # NodePrices = HubPrices + BasisRisk
 
 # Alter nodal prices
-experiment = 'mean_zero_50p_std'
-node = 'OKGE_SEILING'#'OKGEKEENANWIND' 'WFECVICILD2'
+experiment = 'observed'
+node = 'WFEC_MOORELAND_2'#'OKGEKEENANWIND' 'WFECVICILD2'
 
 #define (ranges from 0-99)
 pick = 0 #0 = max floor improvement, 99 = max profits
@@ -192,7 +192,7 @@ Floor_improvement = VAR - V
 Profit_fraction = float(DeveloperProfits/RX)
 results = [Profit_fraction, Floor_improvement]
 
-# print(results)
+print(results)
 # print(Monthly)
 
 filename = 'Monthly' + str(row_to_explore) + '.txt'
@@ -291,8 +291,8 @@ print(results)
 plt.figure()
 plt.plot(N[2])
 plt.plot(Monthly)
-plt.plot(Monthly_P99)
-plt.legend(['No Hedge','Hedge','P99'])
+# plt.plot(Monthly_P99)
+# plt.legend(['No Hedge','Hedge','P99'])
 
 # #set up empty vectors for values
 # DeveloperProfits = 0

@@ -124,8 +124,9 @@ T_targets = np.transpose(targets)
 plt.figure()
 plt.plot(T_targets)
 plt.xlabel('Hour')
-plt.ylabel('Target (MWh)')
-plt.legend(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+plt.ylabel('Wind Power (MWh)')
+# plt.legend(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],framealpha=1)
+plt.savefig('diurnal.png',dpi=500)
 
 df_T = pd.DataFrame(T_targets)
 df_T.columns = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']

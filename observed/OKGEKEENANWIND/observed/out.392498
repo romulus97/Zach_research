@@ -1,0 +1,44 @@
+815.4882682402929 minutes
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@n3n5-11>
+Subject: Job 392498: <python platypus_hedge_model.py> in cluster <henry2> Done
+
+Job <python platypus_hedge_model.py> was submitted from host <login03> by user <jkern> in cluster <henry2> at Fri Feb  5 01:00:24 2021
+Job was executed on host(s) <8*n3n5-11>, in queue <single_chassis>, as user <jkern> in cluster <henry2> at Fri Feb  5 01:00:31 2021
+</home/jkern> was used as the home directory.
+</share/infews/jkern/platypus/wind/experiments/OKGEKEENANWIND/observed> was used as the working directory.
+Started at Fri Feb  5 01:00:31 2021
+Terminated at Fri Feb  5 14:36:05 2021
+Results reported at Fri Feb  5 14:36:05 2021
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+python platypus_hedge_model.py
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   48945.39 sec.
+    Max Memory :                                 48.02 MB
+    Average Memory :                             48.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              3
+    Max Threads :                                4
+    Run time :                                   48940 sec.
+    Turnaround time :                            48941 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <err.392498> for stderr output of this job.
+
