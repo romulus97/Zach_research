@@ -53,7 +53,7 @@ for node in L:
 
 ax1.set_xlabel('Price ($/MWh',fontname='Arial',fontweight='bold')
 ax1.set_ylabel('Cumulative Probability',fontname='Arial',fontweight='bold')
-ax1.set_xlim(0,250)
+ax1.set_xlim(-100,250)
     
 
 # monthly average prices
